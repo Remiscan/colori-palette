@@ -1,0 +1,12 @@
+html { color-scheme: light dark; }
+body { color: black; }
+.yes { background-color: palegreen; }
+.close { background-color: gold; }
+.no { background-color: pink; }
+
+@media (prefers-color-scheme: dark) {
+  body {color: white; }
+  .yes { background-color: #004909; }
+  .close { background-color: #473a00; }
+  .no { background-color: #5a2834; }
+}
