@@ -1,4 +1,5 @@
-import Couleur from './couleur.js';
+// @ts-ignore
+import Couleur from '../../dist/colori.js';
 
 
 
