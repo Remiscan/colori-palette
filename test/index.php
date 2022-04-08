@@ -26,7 +26,7 @@
   /*<?php ob_start();?>*/
 
   import Couleur from '../../dist/colori.js';
-  import Palette from '../dist/palette.js';
+  import Palette from '../palette.js';
 
   /*<?php $imports = ob_get_clean();
   require_once $_SERVER['DOCUMENT_ROOT'] . '/_common/php/versionize-files.php';
