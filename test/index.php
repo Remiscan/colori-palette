@@ -78,6 +78,13 @@
     }
   }
 
+  class MonetRecursivePalet extends Palette {
+    constructor(hue) {
+      const color = new Couleur(`color(oklch .5 0.1328123146401862 ${hue})`);
+      super(color, monetGenerator, { recursivelyForceLightness: true });
+    }
+  }
+
 
 
   // Whatever palet
@@ -170,7 +177,7 @@
 
 
 
-  const classes = [ 'MonetPalette', 'ContrastedPalette' ];
+  const classes = [ 'MonetPalette', 'MonetRecursivePalet', 'ContrastedPalette' ];
 
   function makePalet(className, h) {
     const hue = parseFloat(h);
