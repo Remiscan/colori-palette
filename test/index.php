@@ -1,12 +1,12 @@
 <!doctype html>
 <link rel="stylesheet" href="./styles.css">
 <style>
-  .palet {
+  .palette {
     display: flex;
     flex-direction: row;
   }
 
-  .palet>div {
+  .palette>div {
     width: 4em;
     height: 3em;
     background-color: var(--color);
@@ -34,24 +34,9 @@
 
 
 
-  // Monet-like palet
+  // Monet-like palette
 
   const monetGenerator = function(color) {
-    const lightnesses = [
-      1,
-      .9880873963836093,
-      .9551400440214246,
-      .9127904082618294,
-      .8265622041716898,
-      .7412252673769428,
-      .653350946076347,
-      .5624050605208273,
-      .48193149058901036,
-      .39417829080418526,
-      .3091856317280812,
-      .22212874192541768,
-      0
-    ];
     const [x, chroma, hue] = color.valuesTo('oklch');
     const chromas = [
       chroma / 12,
@@ -61,14 +46,30 @@
       chroma * 2 / 3
     ];
 
-    return chromas.map((ch, k) => {
-      const h = k < 4 ? hue : (hue + 60);
-      return {
-        lightnesses: lightnesses,
-        chroma: ch,
-        hue: h
-      };
-    });
+    return {
+      lightnesses: [
+        1,
+        .9880873963836093,
+        .9551400440214246,
+        .9127904082618294,
+        .8265622041716898,
+        .7412252673769428,
+        .653350946076347,
+        .5624050605208273,
+        .48193149058901036,
+        .39417829080418526,
+        .3091856317280812,
+        .22212874192541768,
+        0
+      ],
+      colors: [
+        { label: 'neutral1', hue, chroma: chroma / 12 },
+        { label: 'neutral2', hue, chroma: chroma / 6 },
+        { label: 'accent1', hue, chroma },
+        { label: 'accent2', hue: hue + 60, chroma: chroma / 3 },
+        { label: 'accent3', hue: hue + 60, chroma: chroma * 2 / 3 }
+      ]
+    };
   };
 
   class MonetPalette extends Palette {
@@ -87,37 +88,7 @@
 
 
 
-  // Whatever palet
-
-  const whateverGenerator = function(color) {
-    const lightnesses = [];
-    let i = 1;
-    while (i >= 0) {
-      lightnesses.push(i);
-      i -= .1;
-    }
-    const [x, chroma, hue] = color.valuesTo('oklch');
-    const hues = [hue, hue, hue + 180, hue + 180];
-
-    return hues.map((h, k) => {
-      return {
-        lightnesses,
-        chroma: (k % 2 === 1) ? chroma / 3 : chroma,
-        hue: h
-      };
-    });
-  };
-
-  class WhateverPalette extends Palette {
-    constructor(hue) {
-      const color = new Couleur(`color(oklch .5 0.1 ${hue})`);
-      super(color, whateverGenerator);
-    }
-  }
-
-
-
-  // Contrasted palet
+  // Contrasted palette
 
   const contrastedGenerator = function(color) {
     /*const grey = new Couleur('color(oklab .5 0 0)');
@@ -132,16 +103,17 @@
     console.log(JSON.stringify(lightnesses));*/
 
     // Lightnesses computed with the previous commented code
-    const lightnesses = [0.9948730403485463,0.969787591129796,0.9442748958172962,0.8917236262860462,0.8368530208172963,0.7792968684735463,0.6503906184735461,0.5809936458172961,0.5017700130047963,0.4064331001636162,0.3482665970166082,0.2636718715583154];
     const [x, chroma, hue] = color.valuesTo('oklch');
-    const chromas = [0, chroma / 6, chroma / 3, 0.13];
-    return chromas.map((c, k) => {
-      return {
-        lightnesses,
-        chroma: c,
-        hue
-      };
-    });
+
+    return {
+      lightnesses: [0.9948730403485463,0.969787591129796,0.9442748958172962,0.8917236262860462,0.8368530208172963,0.7792968684735463,0.6503906184735461,0.5809936458172961,0.5017700130047963,0.4064331001636162,0.3482665970166082,0.2636718715583154],
+      colors: [
+        { label: 'neutral', hue, chroma: 0 },
+        { label: 'accent1', hue, chroma: chroma / 6 },
+        { label: 'accent2', hue, chroma: chroma / 3 },
+        { label: 'accent3', hue, chroma: 0.13 }
+      ]
+    };
   };
 
   // improveContrast after generating each color
@@ -189,14 +161,15 @@
   function updatePalets(hue) {
     document.querySelector('#hue-value').innerHTML = hue;
 
-    const containers = [...document.querySelectorAll('.paletContainer')];
+    const containers = [...document.querySelectorAll('.paletteContainer')];
     for (const container of containers) {
       container.innerHTML = '';
 
       let pal = makePalet(container.dataset.type, hue);
 
-      for (const nuances of pal.colors) {
-        let html = `<div class="palet">`;
+      for (const [label, nuances] of pal.colors) {
+        let html = `<div class="palette" data-label="${label}">
+          <div>${label}</div>`;
         for (const color of nuances) {
           const textColor = color.bestColorScheme() === 'dark' ? 'white' : 'black';
           const contrast = Couleur.contrast(textColor, color, { method: 'apca' });
@@ -224,7 +197,7 @@
     for (const c of classes) {
       document.body.innerHTML += `
         <h2>Palette: ${c}</h2>
-        <div class="paletContainer" data-type="${c}"></div>
+        <div class="paletteContainer" data-type="${c}"></div>
       `;
     }
     const input = document.querySelector('#hue');
