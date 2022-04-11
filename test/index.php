@@ -66,7 +66,7 @@
         { label: 'neutral1', hue, chroma: chroma / 12 },
         { label: 'neutral2', hue, chroma: chroma / 6 },
         { label: 'accent1', hue, chroma },
-        { label: 'accent2', hue: hue + 60, chroma: chroma / 3 },
+        { label: 'accent2', hue, chroma: chroma / 3 },
         { label: 'accent3', hue: hue + 60, chroma: chroma * 2 / 3 }
       ]
     };
