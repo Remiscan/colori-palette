@@ -74,14 +74,14 @@
 
   class MonetPalette extends Palette {
     constructor(hue) {
-      const color = new Couleur(`color(oklch .5 0.1328123146401862 ${hue})`);
+      const color = new Couleur(`oklch(50% 0.1328123146401862 ${hue})`);
       super(color, monetGenerator);
     }
   }
 
   class MonetRecursivePalet extends Palette {
     constructor(hue) {
-      const color = new Couleur(`color(oklch .5 0.1328123146401862 ${hue})`);
+      const color = new Couleur(`oklch(50% 0.1328123146401862 ${hue})`);
       super(color, monetGenerator, { recursivelyForceLightness: true });
     }
   }
@@ -142,7 +142,7 @@
 
   class ContrastedPalette extends Palette {
     constructor(hue) {
-      const color = new Couleur(`color(oklch .5 0.13 ${hue})`);
+      const color = new Couleur(`oklch(50% 0.13 ${hue})`);
       super(color, contrastedGenerator);
     }
   }
