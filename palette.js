@@ -49,6 +49,7 @@ export default class Palette {
           lightnessDiff = Math.abs(lightness - oklch[0]);
           oklch[0] = lightness;
         }
+        oklch[2] = hue;
       }
 
       let rgb = Couleur.convert('oklch', 'srgb', oklch);
