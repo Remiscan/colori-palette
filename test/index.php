@@ -17,9 +17,16 @@
 
 <h1>Testing colori's Palette generation</h1>
 
-<label for="hue">Hue</label>
-<input type="range" id="hue" min="0" max="360" step="1" value="62">
-<span id="hue-value"></span>
+<p>
+  <label for="hue">Hue</label>
+  <input type="range" id="hue" min="0" max="360" step="1" value="62">
+  <span id="hue-value"></span>
+</p>
+<p>
+  <label for="chroma">Chroma</label>
+  <input type="range" id="chroma" min="0" max="0.32" step="0.001" value="0.13">
+  <span id="chroma-value"></span>
+</p>
 
 <script type="module">
   // ▼ ES modules cache-busted grâce à PHP
@@ -80,14 +87,7 @@
     };
   };
 
-  class MonetPalette extends Palette {
-    constructor(hue) {
-      const color = new Couleur(`oklch(50% 0.1328123146401862 ${hue})`);
-      super(color, monetGenerator);
-    }
-  }
-
-  class MonetRecursivePalet extends Palette {
+  class MaterialLikePalette extends Palette {
     constructor(hue) {
       const color = new Couleur(`oklch(50% 0.1328123146401862 ${hue})`);
       super(color, monetGenerator, { recursivelyForceLightness: true });
@@ -110,16 +110,16 @@
     const lightnesses = [...light.reverse(), ...dark].map(c => c.okl);
     console.log(JSON.stringify(lightnesses));*/
 
-    // Lightnesses computed with the previous commented code
     const [x, chroma, hue] = color.valuesTo('oklch');
 
     return {
-      lightnesses: [0.9948730403485463,0.969787591129796,0.9442748958172962,0.8917236262860462,0.8368530208172963,0.7792968684735463,0.6503906184735461,0.5809936458172961,0.5017700130047963,0.4064331001636162,0.3482665970166082,0.2636718715583154],
+      // Lightnesses computed with the previous commented code
+      lightnesses: [0.9948730403485463, 0.969787591129796, 0.9442748958172962, 0.8917236262860462, 0.8368530208172963, 0.7792968684735463, 0.6503906184735461, 0.5809936458172961, 0.5017700130047963, 0.4064331001636162, 0.3482665970166082, 0.2636718715583154],
       colors: [
         { label: 'neutral', hue, chroma: 0 },
         { label: 'accent1', hue, chroma: chroma / 6 },
         { label: 'accent2', hue, chroma: chroma / 3 },
-        { label: 'accent3', hue, chroma: 0.13 }
+        { label: 'accent3', hue, chroma: chroma }
       ]
     };
   };
@@ -149,31 +149,33 @@
   };*/
 
   class ContrastedPalette extends Palette {
-    constructor(hue) {
-      const color = new Couleur(`oklch(50% 0.13 ${hue})`);
-      super(color, contrastedGenerator);
+    constructor(hue, chroma) {
+      const color = new Couleur(`oklch(50% ${chroma} ${hue})`);
+      super(color, contrastedGenerator, { recursivelyForceLightness: true });
     }
   }
 
 
 
-  const classes = [ 'MonetPalette', 'MonetRecursivePalet', 'ContrastedPalette' ];
+  const classes = [ 'MaterialLikePalette', 'ContrastedPalette' ];
 
-  function makePalet(className, h) {
+  function makePalet(className, h, c) {
     const hue = parseFloat(h);
-    return eval(`new ${className}(${hue})`);
+    const chroma = parseFloat(c);
+    return eval(`new ${className}(${hue}, ${chroma})`);
   }
 
 
 
-  function updatePalets(hue) {
+  function updatePalets(hue, chroma) {
     document.querySelector('#hue-value').innerHTML = hue;
+    document.querySelector('#chroma-value').innerHTML = chroma;
 
     const containers = [...document.querySelectorAll('.paletteContainer')];
     for (const container of containers) {
       container.innerHTML = '';
 
-      let pal = makePalet(container.dataset.type, hue);
+      let pal = makePalet(container.dataset.type, hue, chroma);
 
       for (const [label, nuances] of pal.colors) {
         let html = `<div class="palette" data-label="${label}">
@@ -208,11 +210,13 @@
         <div class="paletteContainer" data-type="${c}"></div>
       `;
     }
-    const input = document.querySelector('#hue');
-    input.addEventListener('change', event => {
-      updatePalets(input.value);
-    });
-    updatePalets(input.value);
+    const inputs = [document.querySelector('#hue'), document.querySelector('#chroma')];
+    for (const input of inputs) {
+      input.addEventListener('change', event => {
+        updatePalets(inputs[0].value, inputs[1].value);
+      });
+    }
+    updatePalets(inputs[0].value, inputs[1].value);
   }
   initPalets();
 </script>
