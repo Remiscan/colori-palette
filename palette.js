@@ -1,4 +1,4 @@
-import Couleur from '../dist/colori.js';
+import Couleur from '../lib/dist/colori.min.js';
 
 
 /**

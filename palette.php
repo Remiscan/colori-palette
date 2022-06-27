@@ -1,5 +1,5 @@
 <?php namespace colori {
-  require_once dirname(__DIR__, 3) . '/dist/colori.php';
+  require_once dirname(__DIR__, 1) . '/lib/dist/colori.php';
 
   class Palette {
     public array $colors;
