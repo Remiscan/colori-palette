@@ -36,10 +36,10 @@ export default class Palette {
 
     const nuances = []; //: Couleur[]
     for (const lightness of this.lightnesses) {
-      let oklch = [lightness, chroma, hue];
+      let oklrch = [lightness, chroma, hue];
       
-      oklch = Couleur.toGamut('srgb', oklch, 'oklch');
-      let rgb = Couleur.convert('oklch', 'srgb', oklch);
+      oklrch = Couleur.toGamut('srgb', oklrch, 'oklrch');
+      let rgb = Couleur.convert('oklrch', 'srgb', oklrch);
 
       let newColor = new Couleur(rgb);
 
