@@ -13,7 +13,7 @@
         $nuances = [];
         foreach ($color->lightnesses as $lightness) {
           $rgb = Couleur::convert('oklch', 'srgb', [$lightness, $color->chroma, $color->hue]);
-          $rgb = Couleur::toGamut('srgb', $rgb, 'srgb');
+          $rgb = Couleur::valuesToGamut('srgb', $rgb, 'srgb');
           $newColor = new Couleur($rgb);
           $nuances[] = $newColor;
         }
