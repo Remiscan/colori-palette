@@ -38,8 +38,8 @@ export default class Palette {
     for (const lightness of this.lightnesses) {
       let oklrch = [lightness, chroma, hue];
       
-      oklrch = Couleur.valuesToGamut('srgb', oklrch, 'oklrch');
       let rgb = Couleur.convert('oklrch', 'srgb', oklrch);
+      rgb = Couleur.valuesToGamut('srgb', rgb);
 
       let newColor = new Couleur(rgb);
 
