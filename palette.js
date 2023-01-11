@@ -57,4 +57,18 @@ export default class Palette {
     }
     this.colors.set(label, nuances);
   }
+
+
+  /** Returns css variables with all the color hex expressions. */
+  toCSS() {
+    let css = ``;
+    for (const [label, colors] of this.colors) {
+      for (let k = 0; k < colors.length; k++) {
+        const color = colors[k];
+        const lightness = this.lightnesses[k];
+        css += `--${label}-${String(100 * lightness).replace(/[^0-9]/g, '_')}:${color.hex};`;
+      }
+    }
+    return css;
+  }
 }

@@ -159,6 +159,7 @@
       container.innerHTML = '';
 
       let pal = makePalet(container.dataset.type, hue, chroma);
+      console.log(container.dataset.type, ':', pal.toCSS());
 
       for (const [label, nuances] of pal.colors) {
         let html = `<div class="palette" data-label="${label}">
