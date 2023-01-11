@@ -1,4 +1,6 @@
+// @ts-check
 import Couleur from 'colori';
+
 
 
 /**
@@ -8,18 +10,22 @@ import Couleur from 'colori';
 
 
 
+/**
+ * @class A color palette generated with Colori.
+ * @property {Map<string, Couleur[]>} colors
+ */
 export default class Palette {
   /**
    * Creates a color palette from a color.
    * @param {Couleur} color - The color from which the palette will be derived.
-   * @param {function(Couleur): paletteData} generator - A function that generates data about each key color in the palette.
+   * @param {(...args: any[]) => paletteData} generator - A function that generates data about each key color in the palette.
    * @param {object} options
    */
-  constructor(color, generator = () => [], options = {}) {
+  constructor(color, generator, options = {}) {
     this.colors = new Map(); // : Map<string, Couleur[]>. Will be a map of arrays of color nuances.
 
     const data = generator(color);
-    this.lightnesses = data.lightnesses;
+    this.lightnesses = data.lightnesses; // Color lightnesses in OKLrCH format.
     
     for (const colorData of data.colors) {
       this.addKeyColor(colorData);
@@ -27,6 +33,10 @@ export default class Palette {
   }
 
 
+  /**
+   * Adds a color to the palette.
+   * @param {colorData} arguments
+   */
   addKeyColor({ label, hue, chroma }) {
     const nulls = [];
     if (label == null)  nulls.push('label');

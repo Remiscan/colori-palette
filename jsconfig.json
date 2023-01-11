@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "paths": {
+      "colori": ["../lib/src/ts/main"]
+    }
+  }
+}
