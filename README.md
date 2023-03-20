@@ -1,0 +1,1 @@
+Check out [the colori-demo website](https://github.com/Remiscan/colori-demo) or [the Shinydex app](https://github.com/Remiscan/Shinydex) to see the palette generation in action.
